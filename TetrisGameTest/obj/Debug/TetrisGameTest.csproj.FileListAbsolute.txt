@@ -1,0 +1,9 @@
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\obj\Debug\TetrisGameTest.csproj.AssemblyReference.cache
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\obj\Debug\TetrisGameTest.Properties.Resources.resources
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\obj\Debug\TetrisGameTest.csproj.GenerateResource.cache
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\obj\Debug\TetrisGameTest.csproj.CoreCompileInputs.cache
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\bin\Debug\TetrisGameTest.exe.config
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\bin\Debug\TetrisGameTest.exe
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\bin\Debug\TetrisGameTest.pdb
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\obj\Debug\TetrisGameTest.exe
+C:\Users\rakot\B2-INFO\C#\TetrisGameTest\TetrisGameTest\obj\Debug\TetrisGameTest.pdb
