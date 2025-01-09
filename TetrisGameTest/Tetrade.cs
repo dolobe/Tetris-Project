@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TetrisGameTest
 {
@@ -68,15 +64,24 @@ namespace TetrisGameTest
 
         public void Rotate()
         {
-            Point pivot = Blocks[1]; // Assuming the second block is the pivot
+            Point pivot = Blocks[1]; // Le pivot est le second bloc de la tétrade
+            Point[] newBlocks = new Point[Blocks.Length];
+
+            // Rotation des blocs autour du pivot
             for (int i = 0; i < Blocks.Length; i++)
             {
                 int x = Blocks[i].X - pivot.X;
                 int y = Blocks[i].Y - pivot.Y;
-                Blocks[i].X = pivot.X - y;
-                Blocks[i].Y = pivot.Y + x;
+                newBlocks[i] = new Point(pivot.X - y, pivot.Y + x);
+            }
+
+            // Vérifie si la tétrade après rotation peut être placée dans le grid
+            if (CanPlacePiece(new Tetrade(newBlocks, this.Color)))
+            {
+                Blocks = newBlocks;
             }
         }
+
 
         public void RotateBack()
         {
@@ -90,6 +95,16 @@ namespace TetrisGameTest
             }
         }
 
+        public bool CanPlacePiece(Tetrade piece)
+        {
+            foreach (var block in piece.Blocks)
+            {
+                if (block.X < 0 || block.X >= 10 || block.Y < 0 || block.Y >= 20)
+                    return false;
+            }
+            return true;
+        }
+
         public void Draw(Graphics g, int cellWidth, int cellHeight)
         {
             foreach (var block in Blocks)
@@ -100,4 +115,3 @@ namespace TetrisGameTest
         }
     }
 }
- 

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TetrisGameTest
 {
@@ -19,6 +15,7 @@ namespace TetrisGameTest
             cells = new Color[rows, cols];
         }
 
+        // Vérifie si la tétrade peut se déplacer vers le bas sans sortir du grid
         public bool CanMoveDown(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
@@ -26,7 +23,8 @@ namespace TetrisGameTest
                 int x = block.X;
                 int y = block.Y + 1;
 
-                if (y >= rows || cells[y, x] != Color.Empty)
+                // Vérifiez que le bloc reste dans les limites du grid et que la cellule est vide
+                if (y >= rows || x < 0 || x >= cols || cells[y, x] != Color.Empty)
                 {
                     return false;
                 }
@@ -34,6 +32,41 @@ namespace TetrisGameTest
             return true;
         }
 
+        // Vérifie si la tétrade peut se déplacer vers la gauche
+        public bool CanMoveLeft(Tetrade piece)
+        {
+            foreach (var block in piece.Blocks)
+            {
+                int x = block.X - 1;
+                int y = block.Y;
+
+                // Vérifiez que le bloc reste dans les limites du grid et que la cellule est vide
+                if (x < 0 || cells[y, x] != Color.Empty)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Vérifie si la tétrade peut se déplacer vers la droite
+        public bool CanMoveRight(Tetrade piece)
+        {
+            foreach (var block in piece.Blocks)
+            {
+                int x = block.X + 1;
+                int y = block.Y;
+
+                // Vérifiez que le bloc reste dans les limites du grid et que la cellule est vide
+                if (x >= cols || cells[y, x] != Color.Empty)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Vérifie si la tétrade peut être placée dans le grid sans sortir
         public bool CanPlacePiece(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
@@ -41,6 +74,7 @@ namespace TetrisGameTest
                 int x = block.X;
                 int y = block.Y;
 
+                // Vérifie si le bloc est en dehors des limites du grid ou si la cellule est déjà occupée
                 if (x < 0 || x >= cols || y < 0 || y >= rows || cells[y, x] != Color.Empty)
                 {
                     return false;
@@ -49,6 +83,7 @@ namespace TetrisGameTest
             return true;
         }
 
+        // Fusionne la tétrade dans le grid
         public void Merge(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
@@ -57,6 +92,7 @@ namespace TetrisGameTest
             }
         }
 
+        // Efface les lignes pleines et met à jour le score
         public void ClearFullRows(ref int score)
         {
             for (int y = 0; y < rows; y++)
@@ -81,11 +117,16 @@ namespace TetrisGameTest
                             cells[ty, tx] = cells[ty - 1, tx];
                         }
                     }
+                    for (int x = 0; x < cols; x++)
+                    {
+                        cells[0, x] = Color.Empty;
+                    }
                 }
             }
         }
 
-        public void Draw(Graphics g)
+        // Dessine le grid
+        public void Draw(Graphics g, int cellWidth, int cellHeight)
         {
             for (int y = 0; y < rows; y++)
             {
@@ -93,52 +134,12 @@ namespace TetrisGameTest
                 {
                     if (cells[y, x] != Color.Empty)
                     {
-                        g.FillRectangle(new SolidBrush(cells[y, x]), x * 20, y * 20, 20, 20);
+                        g.FillRectangle(new SolidBrush(cells[y, x]), x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+                        g.DrawRectangle(Pens.Black, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
                     }
                 }
             }
         }
-
-        public bool CanMoveLeft(Tetrade piece)
-        {
-            foreach (var block in piece.Blocks)
-            {
-                int x = block.X - 1;
-                int y = block.Y;
-
-                if (x < 0 || cells[y, x] != Color.Empty)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public bool CanMoveRight(Tetrade piece)
-        {
-            foreach (var block in piece.Blocks)
-            {
-                int x = block.X + 1;
-                int y = block.Y;
-
-                if (x >= cols || cells[y, x] != Color.Empty)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public void ClearGrid()
-        {
-            for (int y = 0; y < rows; y++)
-            {
-                for (int x = 0; x < cols; x++)
-                {
-                    cells[y, x] = Color.Empty;
-                }
-            }
-        }
-
     }
 }
+

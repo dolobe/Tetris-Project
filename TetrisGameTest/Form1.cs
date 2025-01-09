@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TetrisGameTest
@@ -25,16 +19,15 @@ namespace TetrisGameTest
 
         private void InitializeGame()
         {
-            gameGrid = new Grid(40, 20);
+            gameGrid = new Grid(20, 10);
             currentPiece = Tetrade.GetRandomPiece();
             gameTimer = new Timer();
             gameTimer.Interval = 500;
             gameTimer.Tick += GameTimer_Tick;
 
             this.KeyDown += Form1_KeyDown;
+            gameTimer.Start();
         }
-
-
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
@@ -65,21 +58,17 @@ namespace TetrisGameTest
                 switch (e.KeyCode)
                 {
                     case Keys.Left:
-                        if (gameGrid.CanMoveLeft(currentPiece))
-                            currentPiece.MoveLeft();
+                        if (gameGrid.CanMoveLeft(currentPiece)) currentPiece.MoveLeft();
                         break;
                     case Keys.Right:
-                        if (gameGrid.CanMoveRight(currentPiece))
-                            currentPiece.MoveRight();
+                        if (gameGrid.CanMoveRight(currentPiece)) currentPiece.MoveRight();
                         break;
                     case Keys.Down:
-                        if (gameGrid.CanMoveDown(currentPiece))
-                            currentPiece.MoveDown();
+                        if (gameGrid.CanMoveDown(currentPiece)) currentPiece.MoveDown();
                         break;
                     case Keys.Up:
                         currentPiece.Rotate();
-                        if (!gameGrid.CanPlacePiece(currentPiece))
-                            currentPiece.RotateBack();
+                        if (!gameGrid.CanPlacePiece(currentPiece)) currentPiece.RotateBack();
                         break;
                 }
                 gamePanel.Invalidate();
@@ -106,7 +95,6 @@ namespace TetrisGameTest
             }
         }
 
-
         private void UpdateScoreLabel()
         {
             scoreLabel.Text = $"Score: {score}";
@@ -118,11 +106,7 @@ namespace TetrisGameTest
 
             DrawGrid(g);
             currentPiece.Draw(g, 55, 45);
-        }
-
-        private void NextPanel_Paint(object sender, PaintEventArgs e)
-        {
-            gameGrid.Draw(e.Graphics);
+            gameGrid.Draw(g, 55, 45);
         }
     }
 }
