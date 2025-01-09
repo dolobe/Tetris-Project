@@ -15,7 +15,7 @@ namespace TetrisGameTest
         private Timer gameTimer;
         private int score;
         private Grid gameGrid;
-        private Tetromino currentPiece;
+        private Tetrade currentPiece;
 
         public Form1()
         {
@@ -25,8 +25,8 @@ namespace TetrisGameTest
 
         private void InitializeGame()
         {
-            gameGrid = new Grid(20, 10);
-            currentPiece = Tetromino.GetRandomPiece();
+            gameGrid = new Grid(40, 20);
+            currentPiece = Tetrade.GetRandomPiece();
             gameTimer = new Timer();
             gameTimer.Interval = 500;
             gameTimer.Tick += GameTimer_Tick;
@@ -34,24 +34,7 @@ namespace TetrisGameTest
             this.KeyDown += Form1_KeyDown;
         }
 
-        private void PlayButton_Click(object sender, EventArgs e)
-        {
-            score = 0;
-            UpdateScoreLabel();
-            currentPiece = Tetromino.GetRandomPiece();
-            gameGrid.ClearGrid();
-            gameTimer.Start();
-        }
 
-        private void OptionsButton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Les options seront implémentées ici.");
-        }
-
-        private void QuitButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
@@ -64,7 +47,7 @@ namespace TetrisGameTest
                 gameGrid.Merge(currentPiece);
                 gameGrid.ClearFullRows(ref score);
                 UpdateScoreLabel();
-                currentPiece = Tetromino.GetRandomPiece();
+                currentPiece = Tetrade.GetRandomPiece();
 
                 if (!gameGrid.CanPlacePiece(currentPiece))
                 {
@@ -103,6 +86,27 @@ namespace TetrisGameTest
             }
         }
 
+        private void DrawGrid(Graphics g)
+        {
+            int cols = 10;
+            int rows = 20;
+            int cellWidth = 55;
+            int cellHeight = 45;
+
+            Pen gridPen = new Pen(Color.Gray, 1);
+
+            for (int i = 0; i <= rows; i++)
+            {
+                g.DrawLine(gridPen, 0, i * cellHeight, cols * cellWidth, i * cellHeight);
+            }
+
+            for (int j = 0; j <= cols; j++)
+            {
+                g.DrawLine(gridPen, j * cellWidth, 0, j * cellWidth, rows * cellHeight);
+            }
+        }
+
+
         private void UpdateScoreLabel()
         {
             scoreLabel.Text = $"Score: {score}";
@@ -110,8 +114,15 @@ namespace TetrisGameTest
 
         private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
+            Graphics g = e.Graphics;
+
+            DrawGrid(g);
+            currentPiece.Draw(g, 55, 45);
+        }
+
+        private void NextPanel_Paint(object sender, PaintEventArgs e)
+        {
             gameGrid.Draw(e.Graphics);
-            currentPiece.Draw(e.Graphics);
         }
     }
 }

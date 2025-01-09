@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TetrisGameTest
 {
-    public class Tetromino
+    public class Tetrade
     {
         public Point[] Blocks { get; private set; }
         public Color Color { get; private set; }
@@ -28,18 +28,18 @@ namespace TetrisGameTest
             Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan
         };
 
-        public Tetromino(Point[] blocks, Color color)
+        public Tetrade(Point[] blocks, Color color)
         {
             Blocks = blocks;
             Color = color;
         }
 
-        public static Tetromino GetRandomPiece()
+        public static Tetrade GetRandomPiece()
         {
             int index = random.Next(Shapes.Length);
             Point[] shape = (Point[])Shapes[index].Clone();
             Color color = Colors[index];
-            return new Tetromino(shape, color);
+            return new Tetrade(shape, color);
         }
 
         public void MoveDown()
@@ -68,31 +68,36 @@ namespace TetrisGameTest
 
         public void Rotate()
         {
+            Point pivot = Blocks[1]; // Assuming the second block is the pivot
             for (int i = 0; i < Blocks.Length; i++)
             {
-                int x = Blocks[i].X;
-                Blocks[i].X = Blocks[i].Y;
-                Blocks[i].Y = -x;
-            }
-        }
-
-        public void Draw(Graphics g)
-        {
-            foreach (var block in Blocks)
-            {
-                g.FillRectangle(new SolidBrush(Color), block.X * 20, block.Y * 20, 20, 20);
+                int x = Blocks[i].X - pivot.X;
+                int y = Blocks[i].Y - pivot.Y;
+                Blocks[i].X = pivot.X - y;
+                Blocks[i].Y = pivot.Y + x;
             }
         }
 
         public void RotateBack()
         {
+            Point pivot = Blocks[1];
             for (int i = 0; i < Blocks.Length; i++)
             {
-                int y = Blocks[i].Y;
-                Blocks[i].Y = Blocks[i].X;
-                Blocks[i].X = -y;
+                int x = Blocks[i].X - pivot.X;
+                int y = Blocks[i].Y - pivot.Y;
+                Blocks[i].X = pivot.X + y;
+                Blocks[i].Y = pivot.Y - x;
             }
         }
 
+        public void Draw(Graphics g, int cellWidth, int cellHeight)
+        {
+            foreach (var block in Blocks)
+            {
+                g.FillRectangle(new SolidBrush(Color), block.X * cellWidth, block.Y * cellHeight, cellWidth, cellHeight);
+                g.DrawRectangle(Pens.Black, block.X * cellWidth, block.Y * cellHeight, cellWidth, cellHeight);
+            }
+        }
     }
 }
+ 

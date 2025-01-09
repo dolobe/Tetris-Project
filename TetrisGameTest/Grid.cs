@@ -19,7 +19,7 @@ namespace TetrisGameTest
             cells = new Color[rows, cols];
         }
 
-        public bool CanMoveDown(Tetromino piece)
+        public bool CanMoveDown(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
             {
@@ -34,7 +34,7 @@ namespace TetrisGameTest
             return true;
         }
 
-        public bool CanPlacePiece(Tetromino piece)
+        public bool CanPlacePiece(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
             {
@@ -49,7 +49,7 @@ namespace TetrisGameTest
             return true;
         }
 
-        public void Merge(Tetromino piece)
+        public void Merge(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
             {
@@ -99,7 +99,7 @@ namespace TetrisGameTest
             }
         }
 
-        public bool CanMoveLeft(Tetromino piece)
+        public bool CanMoveLeft(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
             {
@@ -114,7 +114,7 @@ namespace TetrisGameTest
             return true;
         }
 
-        public bool CanMoveRight(Tetromino piece)
+        public bool CanMoveRight(Tetrade piece)
         {
             foreach (var block in piece.Blocks)
             {
