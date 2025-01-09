@@ -108,5 +108,25 @@ namespace TetrisGameTest
             currentPiece.Draw(g, 55, 45);
             gameGrid.Draw(g, 55, 45);
         }
+
+        private void NextPanel_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            int cellSize = 20;
+            System.Drawing.Graphics g = e.Graphics;
+            System.Drawing.Pen gridPen = new System.Drawing.Pen(System.Drawing.Color.Gray);
+
+            for (int x = 0; x <= this.nextPanel.Width; x += cellSize)
+            {
+                g.DrawLine(gridPen, x, 0, x, this.nextPanel.Height);
+            }
+
+            for (int y = 0; y <= this.nextPanel.Height; y += cellSize)
+            {
+                g.DrawLine(gridPen, 0, y, this.nextPanel.Width, y);
+            }
+
+            gridPen.Dispose();
+        }
+
     }
 }
