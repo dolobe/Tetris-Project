@@ -17,6 +17,7 @@ namespace TetrisGameTest
         {
             InitializeComponent();
             InitializeGame();
+            InitializeNextPanel();
         }
 
         private void InitializeGame()
@@ -31,6 +32,12 @@ namespace TetrisGameTest
 
             this.KeyDown += Form1_KeyDown;
             gameTimer.Start();
+        }
+
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            gameTimer.Stop();
+            Application.Exit();
         }
 
         private void LoadTopScore()
@@ -65,7 +72,7 @@ namespace TetrisGameTest
             {
                 gameGrid.Merge(currentPiece);
                 gameGrid.ClearFullRows(ref score);
-                UpdateScoreLabel();                
+                UpdateScoreLabel();
                 currentPiece = Tetrade.GetRandomPiece();
 
                 if (!gameGrid.CanPlacePiece(currentPiece))
@@ -163,7 +170,7 @@ namespace TetrisGameTest
             gridPen.Dispose();
         }
 
-        
+
 
         private void InitializeNextPanel()
         {
