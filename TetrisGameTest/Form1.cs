@@ -10,6 +10,8 @@ namespace TetrisGameTest
         private int score;
         private Grid gameGrid;
         private Tetrade currentPiece;
+        private int topScore;
+        private const string scoreFilePath = "topscore.txt";
 
         public Form1()
         {
@@ -25,8 +27,32 @@ namespace TetrisGameTest
             gameTimer.Interval = 500;
             gameTimer.Tick += GameTimer_Tick;
 
+            LoadTopScore();
+
             this.KeyDown += Form1_KeyDown;
             gameTimer.Start();
+        }
+
+        private void LoadTopScore()
+        {
+            if (System.IO.File.Exists(scoreFilePath))
+            {
+                string scoreText = System.IO.File.ReadAllText(scoreFilePath);
+                if (int.TryParse(scoreText, out int savedTopScore))
+                {
+                    topScore = savedTopScore;
+                }
+            }
+            else
+            {
+                topScore = 0;
+            }
+            UpdateScoreLabel();
+        }
+
+        private void SaveTopScore()
+        {
+            System.IO.File.WriteAllText(scoreFilePath, topScore.ToString());
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
@@ -39,17 +65,18 @@ namespace TetrisGameTest
             {
                 gameGrid.Merge(currentPiece);
                 gameGrid.ClearFullRows(ref score);
-                UpdateScoreLabel();
+                UpdateScoreLabel();                
                 currentPiece = Tetrade.GetRandomPiece();
 
                 if (!gameGrid.CanPlacePiece(currentPiece))
                 {
                     gameTimer.Stop();
-                    MessageBox.Show($"Game Over! Votre score : {score}");
+                    MessageBox.Show($"Game Over! Votre score : {score}\nTop Score : {topScore}");
                 }
             }
             gamePanel.Invalidate();
         }
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -97,8 +124,16 @@ namespace TetrisGameTest
 
         private void UpdateScoreLabel()
         {
+            if (score > topScore)
+            {
+                topScore = score;
+                SaveTopScore();
+            }
+
             scoreLabel.Text = $"Score: {score}";
+            topScoreLabel.Text = $"Top Score: {topScore}";
         }
+
 
         private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
@@ -127,6 +162,21 @@ namespace TetrisGameTest
 
             gridPen.Dispose();
         }
+
+        
+
+        private void InitializeNextPanel()
+        {
+            nextPanel = new Panel
+            {
+                Size = new System.Drawing.Size(100, 100),
+                Location = new System.Drawing.Point(220, 20),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            this.Controls.Add(nextPanel);
+        }
+
 
     }
 }

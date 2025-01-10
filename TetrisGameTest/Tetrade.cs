@@ -64,10 +64,9 @@ namespace TetrisGameTest
 
         public void Rotate()
         {
-            Point pivot = Blocks[1]; // Le pivot est le second bloc de la tétrade
+            Point pivot = Blocks[1];
             Point[] newBlocks = new Point[Blocks.Length];
 
-            // Rotation des blocs autour du pivot
             for (int i = 0; i < Blocks.Length; i++)
             {
                 int x = Blocks[i].X - pivot.X;
@@ -75,7 +74,6 @@ namespace TetrisGameTest
                 newBlocks[i] = new Point(pivot.X - y, pivot.Y + x);
             }
 
-            // Vérifie si la tétrade après rotation peut être placée dans le grid
             if (CanPlacePiece(new Tetrade(newBlocks, this.Color)))
             {
                 Blocks = newBlocks;
