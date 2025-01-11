@@ -7,6 +7,8 @@ namespace TetrisGameTest
     {
         public Point[] Blocks { get; private set; }
         public Color Color { get; private set; }
+        public int Width { get; internal set; }
+        public int Height { get; internal set; }
 
         private static Random random = new Random();
 
@@ -103,13 +105,19 @@ namespace TetrisGameTest
             return true;
         }
 
-        public void Draw(Graphics g, int cellWidth, int cellHeight)
+        public void Draw(Graphics g, int cellWidth, int cellHeight, int offsetX = 0, int offsetY = 0)
         {
-            foreach (var block in Blocks)
+            Brush pieceBrush = new SolidBrush(Color);
+
+            foreach (Point block in Blocks)
             {
-                g.FillRectangle(new SolidBrush(Color), block.X * cellWidth, block.Y * cellHeight, cellWidth, cellHeight);
-                g.DrawRectangle(Pens.Black, block.X * cellWidth, block.Y * cellHeight, cellWidth, cellHeight);
+                int x = block.X * cellWidth + offsetX;
+                int y = block.Y * cellHeight + offsetY;
+                g.FillRectangle(pieceBrush, x, y, cellWidth, cellHeight);
+
+                g.DrawRectangle(Pens.Black, x, y, cellWidth, cellHeight);
             }
         }
+
     }
 }

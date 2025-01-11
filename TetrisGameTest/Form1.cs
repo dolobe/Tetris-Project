@@ -10,6 +10,7 @@ namespace TetrisGameTest
         private int score;
         private Grid gameGrid;
         private Tetrade currentPiece;
+        private Tetrade nextPiece;
         private int topScore;
         private const string scoreFilePath = "topscore.txt";
 
@@ -17,24 +18,66 @@ namespace TetrisGameTest
         {
             InitializeComponent();
             InitializeGame();
-            InitializeNextPanel();
         }
 
         private void InitializeGame()
         {
             gameGrid = new Grid(20, 10);
             currentPiece = Tetrade.GetRandomPiece();
-            gameTimer = new Timer();
-            gameTimer.Interval = 500;
+            nextPiece = Tetrade.GetRandomPiece();
+            gameTimer = new Timer
+            {
+                Interval = 500
+            };
             gameTimer.Tick += GameTimer_Tick;
 
             LoadTopScore();
 
             this.KeyDown += Form1_KeyDown;
             gameTimer.Start();
+
+            AddControlButtons();
         }
 
         private void BackButton_Click(object sender, EventArgs e)
+        {
+            gameTimer.Stop();
+            Application.Exit();
+        }
+
+        private void AddControlButtons()
+        {
+            // Restart Button
+            Button restartButton = new Button
+            {
+                Text = "Restart",
+                Location = new Point(790, this.Height - 100),
+                Size = new Size(100, 40)
+            };
+            restartButton.Click += RestartButton_Click;
+            this.Controls.Add(restartButton);
+
+            // Return Button
+            Button returnButton = new Button
+            {
+                Text = "Return",
+                Location = new Point(140, this.Height - 80),
+                Size = new Size(100, 40)
+            };
+            returnButton.Click += ReturnButton_Click;
+            this.Controls.Add(returnButton);
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+            gameTimer.Stop();
+            score = 0;
+            InitializeGame();
+            gamePanel.Invalidate();
+            nextPanel.Invalidate();
+        }
+
+        private void ReturnButton_Click(object sender, EventArgs e)
         {
             gameTimer.Stop();
             Application.Exit();
@@ -73,7 +116,9 @@ namespace TetrisGameTest
                 gameGrid.Merge(currentPiece);
                 gameGrid.ClearFullRows(ref score);
                 UpdateScoreLabel();
-                currentPiece = Tetrade.GetRandomPiece();
+
+                currentPiece = nextPiece;
+                nextPiece = Tetrade.GetRandomPiece();
 
                 if (!gameGrid.CanPlacePiece(currentPiece))
                 {
@@ -81,9 +126,10 @@ namespace TetrisGameTest
                     MessageBox.Show($"Game Over! Votre score : {score}\nTop Score : {topScore}");
                 }
             }
-            gamePanel.Invalidate();
-        }
 
+            gamePanel.Invalidate();
+            nextPanel.Invalidate();
+        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -141,7 +187,6 @@ namespace TetrisGameTest
             topScoreLabel.Text = $"Top Score: {topScore}";
         }
 
-
         private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -151,37 +196,42 @@ namespace TetrisGameTest
             gameGrid.Draw(g, 55, 45);
         }
 
-        private void NextPanel_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        private void NextPanel_Paint(object sender, PaintEventArgs e)
         {
-            int cellSize = 20;
-            System.Drawing.Graphics g = e.Graphics;
-            System.Drawing.Pen gridPen = new System.Drawing.Pen(System.Drawing.Color.Gray);
+            Graphics g = e.Graphics;
+            g.Clear(Color.Black);
 
-            for (int x = 0; x <= this.nextPanel.Width; x += cellSize)
+            int cols = 6;
+            int rows = 6;
+            int cellWidth = 40;
+            int cellHeight = 40;
+
+            Pen gridPen = new Pen(Color.Gray, 1);
+            for (int i = 0; i <= rows; i++)
             {
-                g.DrawLine(gridPen, x, 0, x, this.nextPanel.Height);
+                g.DrawLine(gridPen, 0, i * cellHeight, cols * cellWidth, i * cellHeight);
+            }
+            for (int j = 0; j <= cols; j++)
+            {
+                g.DrawLine(gridPen, j * cellWidth, 0, j * cellWidth, rows * cellHeight);
             }
 
-            for (int y = 0; y <= this.nextPanel.Height; y += cellSize)
+            if (nextPiece != null)
             {
-                g.DrawLine(gridPen, 0, y, this.nextPanel.Width, y);
+                int panelWidth = nextPanel.Width;
+                int panelHeight = nextPanel.Height;
+
+                int pieceWidth = nextPiece.Width * cellWidth;
+                int pieceHeight = nextPiece.Height * cellHeight;
+
+                int offsetX = (panelWidth - pieceWidth) / 5;
+                int offsetY = (panelHeight - pieceHeight) / 5;
+
+                offsetX = Math.Max(0, offsetX);
+                offsetY = Math.Max(0, offsetY);
+
+                nextPiece.Draw(g, cellWidth, cellHeight, offsetX, offsetY);
             }
-
-            gridPen.Dispose();
-        }
-
-
-
-        private void InitializeNextPanel()
-        {
-            nextPanel = new Panel
-            {
-                Size = new System.Drawing.Size(100, 100),
-                Location = new System.Drawing.Point(220, 20),
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            this.Controls.Add(nextPanel);
         }
 
 
