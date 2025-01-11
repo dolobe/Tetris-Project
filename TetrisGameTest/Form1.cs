@@ -36,52 +36,8 @@ namespace TetrisGameTest
             this.KeyDown += Form1_KeyDown;
             gameTimer.Start();
 
-            AddControlButtons();
         }
 
-        private void BackButton_Click(object sender, EventArgs e)
-        {
-            gameTimer.Stop();
-            Application.Exit();
-        }
-
-        private void AddControlButtons()
-        {
-            // Restart Button
-            Button restartButton = new Button
-            {
-                Text = "Restart",
-                Location = new Point(790, this.Height - 100),
-                Size = new Size(100, 40)
-            };
-            restartButton.Click += RestartButton_Click;
-            this.Controls.Add(restartButton);
-
-            // Return Button
-            Button returnButton = new Button
-            {
-                Text = "Return",
-                Location = new Point(140, this.Height - 80),
-                Size = new Size(100, 40)
-            };
-            returnButton.Click += ReturnButton_Click;
-            this.Controls.Add(returnButton);
-        }
-
-        private void RestartButton_Click(object sender, EventArgs e)
-        {
-            gameTimer.Stop();
-            score = 0;
-            InitializeGame();
-            gamePanel.Invalidate();
-            nextPanel.Invalidate();
-        }
-
-        private void ReturnButton_Click(object sender, EventArgs e)
-        {
-            gameTimer.Stop();
-            Application.Exit();
-        }
 
         private void LoadTopScore()
         {
@@ -233,7 +189,5 @@ namespace TetrisGameTest
                 nextPiece.Draw(g, cellWidth, cellHeight, offsetX, offsetY);
             }
         }
-
-
     }
 }

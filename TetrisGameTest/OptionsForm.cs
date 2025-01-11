@@ -8,14 +8,6 @@ public partial class OptionsForm : Form
         this.Text = "Options";
         this.Size = new System.Drawing.Size(400, 300);
 
-        Label messageLabel = new Label
-        {
-            Text = "Paramètres à personnaliser ici.",
-            Location = new System.Drawing.Point(50, 50),
-            AutoSize = true
-        };
-        this.Controls.Add(messageLabel);
-
         Label levelLabel = new Label
         {
             Text = "Choisissez un niveau:",
