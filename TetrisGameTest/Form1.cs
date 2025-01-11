@@ -12,9 +12,12 @@ namespace TetrisGameTest
         private Tetrade currentPiece;
         private Tetrade nextPiece;
         private int topScore;
+        private int gameSpeed = 500;
         private const string scoreFilePath = "topscore.txt";
 
-        public Form1()
+
+
+        public Form1(Action<int> onDifficultySelected)
         {
             InitializeComponent();
             InitializeGame();
@@ -27,7 +30,7 @@ namespace TetrisGameTest
             nextPiece = Tetrade.GetRandomPiece();
             gameTimer = new Timer
             {
-                Interval = 500
+                Interval = gameSpeed
             };
             gameTimer.Tick += GameTimer_Tick;
 
@@ -35,8 +38,20 @@ namespace TetrisGameTest
 
             this.KeyDown += Form1_KeyDown;
             gameTimer.Start();
-
         }
+
+        private void OpenOptionsForm()
+        {
+            OptionsForm optionsForm = new OptionsForm(UpdateGameSpeed);
+            optionsForm.ShowDialog();
+        }
+
+        private void UpdateGameSpeed(int speed)
+        {
+            gameSpeed = speed;
+            gameTimer.Interval = gameSpeed;
+        }
+
 
 
         private void LoadTopScore()

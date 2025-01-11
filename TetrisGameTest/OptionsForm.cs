@@ -3,7 +3,15 @@ using System.Windows.Forms;
 
 public partial class OptionsForm : Form
 {
-    public OptionsForm()
+    private Action<int> onDifficultySelected;
+
+    public OptionsForm(Action<int> onDifficultySelected)
+    {
+        this.onDifficultySelected = onDifficultySelected;
+        InitializeComponent();
+    }
+
+    private void InitializeComponent()
     {
         this.Text = "Options";
         this.Size = new System.Drawing.Size(400, 300);
@@ -47,15 +55,15 @@ public partial class OptionsForm : Form
         {
             if (easyButton.Checked)
             {
-                MessageBox.Show("Niveau: Easy");
+                onDifficultySelected(500);  // Facile
             }
             else if (mediumButton.Checked)
             {
-                MessageBox.Show("Niveau: Medium");
+                onDifficultySelected(300);  // Moyen
             }
             else if (hardButton.Checked)
             {
-                MessageBox.Show("Niveau: Hard");
+                onDifficultySelected(150);  // Difficile
             }
 
             this.Close();

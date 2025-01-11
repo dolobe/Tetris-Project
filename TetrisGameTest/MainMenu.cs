@@ -4,8 +4,11 @@ using TetrisGameTest;
 
 public partial class MainMenu : Form
 {
-    public MainMenu()
+    private Action<int> onDifficultySelected;
+
+    public MainMenu(Action<int> onDifficultySelected)
     {
+        this.onDifficultySelected = onDifficultySelected;
         InitializeMenu();
     }
 
@@ -45,14 +48,14 @@ public partial class MainMenu : Form
 
     private void PlayButton_Click(object sender, EventArgs e)
     {
-        Form1 gameForm = new Form1();
+        Form1 gameForm = new Form1(onDifficultySelected);
         gameForm.Show();
         this.Hide();
     }
 
     private void OptionsButton_Click(object sender, EventArgs e)
     {
-        OptionsForm optionsForm = new OptionsForm();
+        OptionsForm optionsForm = new OptionsForm(onDifficultySelected);
         optionsForm.ShowDialog();
     }
 
