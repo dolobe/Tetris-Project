@@ -55,15 +55,15 @@ public partial class OptionsForm : Form
         {
             if (easyButton.Checked)
             {
-                onDifficultySelected(500);  // Facile
+                onDifficultySelected(500);
             }
             else if (mediumButton.Checked)
             {
-                onDifficultySelected(300);  // Moyen
+                onDifficultySelected(300);
             }
             else if (hardButton.Checked)
             {
-                onDifficultySelected(150);  // Difficile
+                onDifficultySelected(150);
             }
 
             this.Close();

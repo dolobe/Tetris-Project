@@ -17,7 +17,6 @@ namespace TetrisGameTest
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainMenu(gameSpeed => {
-                // Passez la vitesse du jeu dans Form1 ou la classe correspondante
             }));
         }
     }

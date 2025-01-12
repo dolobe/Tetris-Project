@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
 
 namespace TetrisGameTest
@@ -12,9 +13,9 @@ namespace TetrisGameTest
         private Tetrade currentPiece;
         private Tetrade nextPiece;
         private int topScore;
-        private int gameSpeed = 500;
         private const string scoreFilePath = "topscore.txt";
-
+        private int level;
+        private int gameSpeed;
 
 
         public Form1(Action<int> onDifficultySelected)
@@ -28,6 +29,10 @@ namespace TetrisGameTest
             gameGrid = new Grid(20, 10);
             currentPiece = Tetrade.GetRandomPiece();
             nextPiece = Tetrade.GetRandomPiece();
+            level = 1;
+
+            gameSpeed = 1000;
+
             gameTimer = new Timer
             {
                 Interval = gameSpeed
@@ -46,13 +51,12 @@ namespace TetrisGameTest
             optionsForm.ShowDialog();
         }
 
+
         private void UpdateGameSpeed(int speed)
         {
-            gameSpeed = speed;
+            gameSpeed = Math.Max(1, speed);
             gameTimer.Interval = gameSpeed;
         }
-
-
 
         private void LoadTopScore()
         {
@@ -87,6 +91,7 @@ namespace TetrisGameTest
                 gameGrid.Merge(currentPiece);
                 gameGrid.ClearFullRows(ref score);
                 UpdateScoreLabel();
+                UpdateLevel();
 
                 currentPiece = nextPiece;
                 nextPiece = Tetrade.GetRandomPiece();
@@ -94,13 +99,14 @@ namespace TetrisGameTest
                 if (!gameGrid.CanPlacePiece(currentPiece))
                 {
                     gameTimer.Stop();
-                    MessageBox.Show($"Game Over! Votre score : {score}\nTop Score : {topScore}");
+                    MessageBox.Show($"Game Over! Votre score : {score}\nTop Score : {topScore}\nLevel : {level}");
                 }
             }
 
             gamePanel.Invalidate();
             nextPanel.Invalidate();
         }
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -204,5 +210,17 @@ namespace TetrisGameTest
                 nextPiece.Draw(g, cellWidth, cellHeight, offsetX, offsetY);
             }
         }
+
+        private void UpdateLevel()
+        {
+            int newLevel = score / 100 + 1;
+            if (newLevel > level)
+            {
+                level = newLevel;
+                gameTimer.Interval = Math.Max(500, gameTimer.Interval - 50);
+                levelLabel.Text = $"Level: {level}";
+            }
+        }
+
     }
 }
