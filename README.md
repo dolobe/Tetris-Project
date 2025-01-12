@@ -45,3 +45,6 @@ Ce projet est une implémentation du jeu de Tetris en utilisant **C#** et **Wind
 
 ## Lien du depot 
 https://github.com/dolobe/Tetris-Project.git
+
+NB : Le jeu est dans le TetrisGameTest
+
