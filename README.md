@@ -19,8 +19,8 @@ Ce projet est une implémentation du jeu de Tetris en utilisant **C#** et **Wind
 - Les options incluent également la possibilité de modifier la vitesse de chute des pièces en fonction de la difficulté choisie.
 - Developpement de la fenêtre des options.
 
-### Jeu
-- **Herison** a implémenté la logique du jeu de Tetris :
+### Jeu(Herison)
+- Implémentation de la logique du jeu de Tetris :
   - Affichage des pièces de Tetris qui tombent dans un espace de jeu.
   - Rotation des pièces et déplacement des pièces à gauche, à droite et vers le bas.
   - Suppression des lignes complètes lorsqu'elles sont remplies de blocs.
