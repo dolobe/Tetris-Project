@@ -3,14 +3,9 @@
 ## Description
 Ce projet est une implémentation du jeu de Tetris en utilisant **C#** et **Windows Forms**. Il propose une interface graphique pour l'interaction avec les utilisateurs, comprenant un menu principal, un formulaire de jeu, et un formulaire d'options pour configurer la difficulté du jeu. Le score du joueur est affiché en temps réel et le score le plus élevé est sauvegardé dans un fichier texte.
 
-##Groupe 
-- Herison
-- Awa 
- **Awa** a travaillé sur la création du menu principal et des options de jeu, et **Herison** il a fait le développement du cœur du jeu, incluant la logique de jeu, la gestion des pièces et des scores.
-
 ## Fonctionnalités
 
-### Menu Principal(Awa)
+### Menu Principal
 - Un menu qui permet de démarrer une nouvelle partie, de régler la difficulté et de quitter le jeu.
 - Le formulaire du menu principal.
 
@@ -19,7 +14,7 @@ Ce projet est une implémentation du jeu de Tetris en utilisant **C#** et **Wind
 - Les options incluent également la possibilité de modifier la vitesse de chute des pièces en fonction de la difficulté choisie.
 - Developpement de la fenêtre des options.
 
-### Jeu(Herison)
+### Jeu
 - Implémentation de la logique du jeu de Tetris :
   - Affichage des pièces de Tetris qui tombent dans un espace de jeu.
   - Rotation des pièces et déplacement des pièces à gauche, à droite et vers le bas.
@@ -47,4 +42,5 @@ Ce projet est une implémentation du jeu de Tetris en utilisant **C#** et **Wind
 https://github.com/dolobe/Tetris-Project.git
 
 NB : Le jeu est dans le TetrisGameTest
+
 
